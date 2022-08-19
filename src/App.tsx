@@ -1,9 +1,20 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BiggerBox = styled.div`
+  width: 600px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,22 +29,27 @@ const Box = styled(motion.div)`
 `;
 
 const boxVariants = {
-  hover: { scale: 1.5, rotate: 90 },
-  click: { scale: 1, borderRadius: "100px" },
-  drag: { backgroundColor: "rgb(46, 204, 113)", transition: { duration: 10 } },
+  hover: { rotateZ: 90 },
+  click: { borderRadius: "100px" },
 };
 
-//애니메이션 효과를 주면서 색상 변경시 : 색을 숫자 값으로 줘야 한다.
+//드래그 시 특정 테두리 밖을 넘지 못하도록 지정
 function App() {
+  //useRef를 이용해 ref를 만든다.
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
   return (
     <Wrapper>
-      <Box
-        drag
-        variants={boxVariants}
-        whileHover="hover"
-        whileDrag="drag"
-        whileTap="click"
-      />
+      <BiggerBox ref={biggerBoxRef}>
+        <Box
+          drag
+          dragSnapToOrigin
+          dragElastic={0.5} //당겨오는 힘
+          dragConstraints={biggerBoxRef} //biggerBoxRef로 제한하기
+          variants={boxVariants}
+          whileHover="hover"
+          whileTap="click"
+        />
+      </BiggerBox>
     </Wrapper>
   );
 }
