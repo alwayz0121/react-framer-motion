@@ -17,15 +17,17 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+//자바스크립트 객체에 시작과 끝을 지정하면, variants 이용해 깔끔하게 애니메이션을 지정할 수 있다.
+const myVariants = {
+  start: { scale: 0 },
+  end: { scale: 1, rotateZ: 360, transition: { type: "spring", delay: 0.5 } },
+};
+
 //시작 후 등장하는 애니메이션
 function App() {
   return (
     <Wrapper>
-      <Box
-        transition={{ type: "spring", delay: 0.5 }}
-        initial={{ scale: 0 }} //초기 모습
-        animate={{ scale: 1, rotateZ: 360 }} //애니메이션 모습
-      />
+      <Box variants={myVariants} initial="start" animate="end" />
     </Wrapper>
   );
 }
