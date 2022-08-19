@@ -12,22 +12,57 @@ const Wrapper = styled.div`
 const Box = styled(motion.div)`
   width: 200px;
   height: 200px;
-  background-color: white;
-  border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-//자바스크립트 객체에 시작과 끝을 지정하면, variants 이용해 깔끔하게 애니메이션을 지정할 수 있다.
-const myVariants = {
-  start: { scale: 0 },
-  end: { scale: 1, rotateZ: 360, transition: { type: "spring", delay: 0.5 } },
+const Circle = styled(motion.div)`
+  background-color: white;
+  height: 70px;
+  width: 70px;
+  place-self: center;
+  border-radius: 35px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const boxVariants = {
+  start: {
+    scale: 0.5,
+    opacity: 0,
+    transition: {
+      type: "spring",
+      duration: 0.5,
+      bounce: 0.5,
+      staggerChildren: 0.2, //시간차를 두고 자식 애니메이션 실행하도록
+    },
+  },
+  end: { scale: 1, opacity: 1 },
 };
 
-//시작 후 등장하는 애니메이션
+const circleVariants = {
+  start: {
+    opacity: 0,
+    y: 10,
+  },
+  end: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
+//부모요소가 있을 때 자식요소는 Motion의 initial과 animate 이름을 따라간다.
 function App() {
   return (
     <Wrapper>
-      <Box variants={myVariants} initial="start" animate="end" />
+      <Box variants={boxVariants} initial="start" animate="end">
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+      </Box>
     </Wrapper>
   );
 }
